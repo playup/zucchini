@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Vasily Mikhaylichenko", "Rajesh Kumar", "Kevin O'Neill"]
   s.email       = ["vasily@playup.com"]
-  s.homepage    = "https://github.com/playup/zucchini"
+  s.homepage    = "http://www.zucchiniframework.org"
   s.summary     = %q{Functional testing framework for iOS-powered devices}
   s.description = %q{Zucchini follows simple walkthrough scenarios for your iOS app, takes screenshots and compares them to the reference ones.}
 
