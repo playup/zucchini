@@ -1,0 +1,239 @@
+html {
+	font-family: Myriad Pro, sans-serif;
+}
+body {
+	margin: 0;
+}
+tr {
+	text-align: center;
+}                      
+td {
+	padding: 2px;
+}
+dl {
+	-webkit-margin-before: 0;
+}
+dd {
+	-webkit-margin-start: 0;
+}
+h1 {
+	margin: 16px;
+	font-weight: normal;
+	font-size: 24px;
+}
+h1 .time {
+	margin-left: 10px;
+	opacity: 0.5;
+}
+h3 {
+	margin: 0 0 6px 4px;
+	font-size: 24px;
+	width: 763px;
+	padding: 0;
+	float: left;
+	text-shadow: 1px 1px 1px white; 
+}
+.indicators {
+	font-size: 12px;
+	width: 92px;
+	float: left;
+	margin: 5px 28px 5px 0;
+	-webkit-transition: all 0.1s ease-in-out;    
+}
+.indicators div {
+	border-radius: 8px;
+	padding: 3px 8px;
+	margin-right: 5px;
+	float: right;
+	color: #FFF;
+	opacity: 0.8;
+	height: 11px;
+	line-height: 11px;
+	font-weight: bold;
+}
+.indicators div:hover {
+	-webkit-transition:opacity 0.3s ease-in-out;    
+}
+.indicators .passed {
+	background: #65C400;
+}
+.indicators .failed {
+	background: #C20000;
+}
+.indicators .pending {
+	background: #F9E934;
+	color: #000;
+}
+.feature {
+	padding: 10px 9px 4px 9px;
+	border-radius: 5px;
+	width: 1012px;
+	margin: 15px 15px 24px 15px;
+	box-shadow: 0 0 4px rgba(0,0,0,0.2);  
+}
+.ci .feature {
+	display: none;
+}
+.ci .first.feature {
+	display: block;
+}
+.buttons {
+	float: left;
+	width: 125px;
+	display: block;  
+}  
+.ci .buttons {
+	display: none;
+}
+.buttons a {
+	text-align: center;
+	width: 70px;
+	color: #484848;
+	text-decoration: none;
+	text-shadow: 0 1px 0 white;
+	font: bold 12px Helvetica, Arial, sans-serif;
+	margin-bottom: 6px;
+	line-height: 26px;
+	height: 25px;
+	display: block;
+	float: left;
+	padding: 0 5px;
+	background: -webkit-linear-gradient(top, #F4F4F4, #ECECEC);
+	border: solid 1px #D4D4D4;
+	border-radius: 5px;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	-webkit-transition: border-color .218s;
+	cursor: pointer; 
+}
+.buttons a.left {
+	border-radius: 5px 0 0 5px;
+	width: 50px;
+	float: left;
+	margin: 0;
+}
+.buttons a.right {
+	border-radius: 0 5px 5px 0;
+	width: 50px;
+	float: left;
+	position: relative;
+	left: -1px;
+	margin: 0;
+}
+.buttons a:hover {
+    border: solid 1px #7f7f7f;
+    color: #282828;
+    background: -webkit-linear-gradient(top, #ffffff, #dfdfdf);
+}
+.buttons a:active {
+    border: solid 1px #7f7f7f;
+    background: #d0d0d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#a8a8a8), color-stop(0.15, #c6c6c6), to(#d8d8d8));
+    background: -webkit-linear-gradient(top, #a8a8a8, #c6c6c6 15%, #d8d8d8);
+}
+
+.screen {
+	-webkit-transition:all 0.2s ease-in-out;
+	width: 990px;
+	height: 15px;
+	padding: 5px 0 5px 9px;
+	margin-bottom: 6px;
+	border-radius: 5px;
+	cursor: pointer;
+	overflow: hidden;
+}
+.screen.passed {
+	color: #65C400;
+	background-color: #DBFFB4;
+	border: 1px #65C400 solid;
+	border-left: 10px #65C400 solid;
+}
+.screen.passed img {
+	box-shadow: 0px 0px 4px #65C400;
+}
+.screen.failed {
+	color: #C20000;
+	background-color: #FFD6D6;
+	border: 1px #C20000 solid;
+	border-left: 10px #C20000 solid;
+}
+.screen.failed img {
+	box-shadow: 0px 0px 4px #C20000;
+}
+.screen.pending {
+	color: #F2CF32;
+	background-color: #FFFDBC;
+	border: 1px solid #F9E934;
+	border-left: 10px solid #F9E934;
+}
+.screen.pending img {
+	box-shadow: 0px 0px 4px #F9E934;
+}
+.screen dt {
+	color: #000;
+	font-size: 13px;
+	line-height: 17px;
+	margin: 0;
+	font-weight: normal;
+}
+.ci .screen dt {
+	position: relative;
+	z-index: 2;
+}
+.screen dd {
+	float: left;
+	margin-right: 10px;
+	-webkit-transition:all 0.3s ease-in-out;  
+	opacity: 0;
+	position: relative;
+	top: -30px;
+}
+.screen dd.hidden {
+	visibility: hidden;
+}
+.screen.expanded, .ci .screen {
+	-webkit-transition:all 0.2s ease-in-out;
+	height: 510px;
+}
+.screen.expanded dd, .ci .screen dd {
+	opacity: 1.0;
+	-webkit-transition:all 0.3s ease-in-out;
+}
+.screen p {
+	margin-bottom: -3px;
+	padding: 5px;
+	font-size: 13px;
+	text-align: center;
+	font-weight: bold;
+	background-color: rgba(255, 255, 255, 0.5);;
+	border-radius: 5px;
+	opacity: 0.0;
+	position: relative;
+	z-index: 0;
+}
+.screen dd:hover p {
+	opacity: 1.0;
+}
+.ci .screen dd p {
+	opacity: 1.0;
+	background: transparent;
+}
+.screen img {
+	width: 320px;
+	height: 480px;
+	position: relative;
+}
+.ci .viewport {
+	width: 1018px;
+	height: 530px;
+	overflow: scroll;			
+}
+.ci .surface {
+	height: 530px;
+	width: 100000px;
+	position: relative;
+}
+.ci .surface .screen {
+	float: left;
+	margin-right: 10px;
+	position: relative;
+}

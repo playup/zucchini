@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <title>Test Results: <%= @device[:name] %>, <%= @time %></title>
+	<link rel="stylesheet" href="<%= @assets_path %>/css/zucchini.report.css" type="text/css" media="screen">
+	<script src="<%= @assets_path %>/js/jquery.js"></script>
+	<script src="<%= @assets_path %>/js/jquery.ui.core.js"></script>
+	<script src="<%= @assets_path %>/js/jquery.effects.core.js"></script>
+	<script src="<%= @assets_path %>/js/zucchini.report.js"></script>
+</head>
+<body class="<%= @ci %>">
+	<header>
+		<h1><%= @device[:name] %><span class="time"><%= @time %></span></h1>
+	</header>
+	
+	<% @features.each_with_index do |f, i| %>
+	<section class="<%= i == 0 ? 'first' : '' %> feature">
+		<h3><%= f.name %></h3>
+		<div class="indicators">
+			<% if !f.stats[:failed].empty?  %><div class="failed"><%=  f.stats[:failed].length.to_s  %></div><% end %>
+			<% if !f.stats[:pending].empty? %><div class="pending"><%= f.stats[:pending].length.to_s %></div><% end %>
+			<% if !f.stats[:passed].empty?  %><div class="passed"><%=  f.stats[:passed].length.to_s  %></div><% end %>
+		</div>
+	
+		<div class="buttons">
+			<a class="expand left">Expand</a>
+			<a class="collapse right">Collapse</a>
+		</div>
+	
+		<div class="viewport">
+			<div class="surface">
+				<% f.screenshots.each do |s|  %>
+				<% css_class = s.diff[0].to_s %>
+				<dl class="<%= css_class %> <%= css_class == 'failed' ? 'expanded' :'' %> screen">
+					<dt><%= s.file_name %></dt>
+					<% %W(actual expected difference).each do |type| %>
+					<dd class="<%= s.result_images[type.to_sym] ? '' : 'hidden' %>"><p><%= type.capitalize %></p><img src="<%= s.result_images[type.to_sym] %>"/></dd>
+					<% end %>
+				</dl> 
+				<% end %>              
+			</div>
+		</div>
+	</section>
+	<% end %>
+</body>
+</html>
