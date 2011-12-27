@@ -28,18 +28,42 @@ Create a feature scaffold for your first feature:
 zucchini generate --feature /path/to/my_project/features/my_feature
 ```
 
-Add your device to features/support/config.yml.
-
-The [udidetect](https://github.com/vaskas/udidetect) utility comes in handy if you plan to add devices from time to time: `udidetect -z`.
-
 Start hacking by modifying features/my_feature/feature.zucchini and features/support/screens/welcome.coffee.
 
 Alternatively, check out the [zucchini-demo](https://github.com/rajbeniwal/zucchini-demo) project featuring an easy to explore Zucchini setup around Apple's CoreDataBooks sample.
 
-Running a feature on the device
+Running on the device
 --------------------------------
+Add your device to features/support/config.yml.
+
+The [udidetect](https://github.com/vaskas/udidetect) utility comes in handy if you plan to add devices from time to time: `udidetect -z`.
+
 ```
 ZUCCHINI_DEVICE="My Device" zucchini run /path/to/my_feature 
+```
+
+Running on the iOS Simulator
+-------------------------------
+We strongly encourage you to run your Zucchini features on real hardware. However, you can run them on the iOS Simulator if you must.
+
+First off, modify your features/support/config.yml to include a full path to your compiled app, e.g.
+
+```
+app: /Users/vaskas/Library/Developer/Xcode/DerivedData/CoreDataBooks-ebeqiuqksrwwoscupvxuzjzrdfjz/Build/Products/Debug-iphonesimulator/CoreDataBooks.app
+```
+
+Secondly, add an 'iOS Simulator' entry to the devices section (no UDID needed) and make sure you provide the actual value for 'screen' based on your iOS Simulator settings:
+
+```
+devices:
+  iOS Simulator:
+    screen: low_ios5
+```
+
+Run it as usual:
+
+```
+ZUCCHINI_DEVICE="iOS Simulator" zucchini run /path/to/my_feature 
 ```
 
 See also
