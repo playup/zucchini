@@ -32,6 +32,16 @@ Start hacking by modifying features/my_feature/feature.zucchini and features/sup
 
 Alternatively, check out the [zucchini-demo](https://github.com/rajbeniwal/zucchini-demo) project featuring an easy to explore Zucchini setup around Apple's CoreDataBooks sample.
 
+
+Xcode 4.2 and earlier
+--------------------------------
+With xcode 4.3 apple has moved the developer tools inside the xcode
+application.
+
+If you are using 4.2 or earlier then be sure to change the `template:` path in
+`config.yml`
+
+
 Running on the device
 --------------------------------
 Add your device to features/support/config.yml.
