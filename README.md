@@ -76,6 +76,22 @@ Run it as usual:
 ZUCCHINI_DEVICE="iOS Simulator" zucchini run /path/to/my_feature 
 ```
 
+Using #include statements with coffescript
+------------------------------------------
+UIAutomation gives you the extra ability to include outside scripts in your
+javascript using this syntax:
+
+    #include 'relative/path/to/javascript.js'
+
+The problem is that coffescript wants to turn this into a javascript comment.
+The way around this is to use [embedded javascript](http://coffeescript.org/#embedded).
+Just surround the statement with backticks and the coffescript compiler won't
+mess with it.
+
+
+    `#include "relative/path/to/javascript.js"`
+
+
 See also
 ---------
 ```
