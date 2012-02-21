@@ -32,6 +32,16 @@ Start hacking by modifying features/my_feature/feature.zucchini and features/sup
 
 Alternatively, check out the [zucchini-demo](https://github.com/rajbeniwal/zucchini-demo) project featuring an easy to explore Zucchini setup around Apple's CoreDataBooks sample.
 
+
+Xcode 4.2 and earlier
+--------------------------------
+With xcode 4.3 apple has moved the developer tools inside the xcode
+application.
+
+If you are using 4.2 then be sure to change the `template:` path in
+`config.yml`
+
+
 Running on the device
 --------------------------------
 Add your device to features/support/config.yml.
@@ -65,6 +75,22 @@ Run it as usual:
 ```
 ZUCCHINI_DEVICE="iOS Simulator" zucchini run /path/to/my_feature 
 ```
+
+Using #include statements with coffescript
+------------------------------------------
+UIAutomation gives you the extra ability to include outside scripts in your
+javascript using this syntax:
+
+    #include 'relative/path/to/javascript.js'
+
+The problem is that coffescript wants to turn this into a javascript comment.
+The way around this is to use [embedded javascript](http://coffeescript.org/#embedded).
+Just surround the statement with backticks and the coffescript compiler won't
+mess with it.
+
+
+    `#include "relative/path/to/javascript.js"`
+
 
 See also
 ---------
