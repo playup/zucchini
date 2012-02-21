@@ -1,7 +1,9 @@
 app: MyApp.app
+
+# For Xcode 4.3 and later
 template: '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate'
 
-# For Xcode < 4.3
+# For Xcode 4.2 uncomment the following line and comment out the previous one
 #template: '/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate'
 
 devices:

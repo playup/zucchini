@@ -38,7 +38,7 @@ Xcode 4.2 and earlier
 With xcode 4.3 apple has moved the developer tools inside the xcode
 application.
 
-If you are using 4.2 or earlier then be sure to change the `template:` path in
+If you are using 4.2 then be sure to change the `template:` path in
 `config.yml`
 
 
