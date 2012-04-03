@@ -16,10 +16,6 @@ module Zucchini
       @@config['app']
     end
   
-    def self.template
-      @@config['template']
-    end
-  
     def self.resolution_name(dimension)   
       @@config['resolutions'][dimension.to_i]
     end

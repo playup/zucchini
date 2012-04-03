@@ -16,6 +16,8 @@ class Zucchini::Runner < Clamp::Command
     raise "ZUCCHINI_DEVICE environment variable not set" unless ENV['ZUCCHINI_DEVICE']
     @device = Zucchini::Config.device(ENV['ZUCCHINI_DEVICE'])   
     
+    @template = detect_template
+    
     exit run 
   end
   
@@ -23,7 +25,8 @@ class Zucchini::Runner < Clamp::Command
     compare_threads = {}
     
     features.each do |f|
-      f.device = @device
+      f.device   = @device
+      f.template = @template
       
       if    collect? then f.collect
       elsif compare? then f.compare
@@ -63,5 +66,12 @@ class Zucchini::Runner < Clamp::Command
   
   def detection_error(path)
     "#{path} is not a feature directory"
+  end
+  
+  def detect_template
+    path  = `xcode-select -print-path`.gsub(/\n/, '')
+    path += "/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
+    raise "Instruments template at #{path} does not exist" unless File.exists? path
+    path
   end
 end

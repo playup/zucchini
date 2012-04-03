@@ -1,6 +1,7 @@
 class Zucchini::Feature
   attr_accessor :path
   attr_accessor :device
+  attr_accessor :template
   attr_accessor :stats
   
   attr_reader :succeeded
@@ -45,9 +46,14 @@ class Zucchini::Feature
   def compile_js
     zucchini_base_path = File.expand_path("#{File.dirname(__FILE__)}/..")
   
-    feature_text = File.open("#{@path}/feature.zucchini").read.gsub(/#.+\n/,"").gsub(/\n/, "\\n")
+    feature_text = File.open("#{@path}/feature.zucchini").read.gsub(/\#.+[\z\n]?/,"").gsub(/\n/, "\\n")
     File.open("#{run_data_path}/feature.coffee", "w+") { |f| f.write("Zucchini.run('#{feature_text}')") }
-    `coffee -o #{run_data_path} -j #{run_data_path}/feature.js -c #{zucchini_base_path}/lib/uia #{@path}/../support/screens #{run_data_path}/feature.coffee`
+
+    cs_paths  = "#{zucchini_base_path}/lib/uia #{@path}/../support/screens"
+    cs_paths += " #{@path}/../support/lib" if File.exists?("#{@path}/../support/lib")
+    cs_paths += " #{run_data_path}/feature.coffee"
+    
+    `coffee -o #{run_data_path} -j #{run_data_path}/feature.js -c #{cs_paths}`
   end
 
   def collect
@@ -58,7 +64,7 @@ class Zucchini::Feature
       device_params = (@device[:name] == "iOS Simulator") ? "" : "-w #{@device[:udid]}"
       
       begin
-        out = `instruments #{device_params} -t #{Zucchini::Config.template} #{Zucchini::Config.app} -e UIASCRIPT #{run_data_path}/feature.js -e UIARESULTSPATH #{run_data_path} 2>&1`
+        out = `instruments #{device_params} -t #{@template} #{Zucchini::Config.app} -e UIASCRIPT #{run_data_path}/feature.js -e UIARESULTSPATH #{run_data_path} 2>&1`
         puts out
         # Hack. Instruments don't issue error return codes when JS exceptions occur
         raise "Instruments run error" if (out.match /JavaScript error/) || (out.match /Instruments\ .{0,5}\ Error\ :/ )
