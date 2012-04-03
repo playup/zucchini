@@ -45,9 +45,14 @@ class Zucchini::Feature
   def compile_js
     zucchini_base_path = File.expand_path("#{File.dirname(__FILE__)}/..")
   
-    feature_text = File.open("#{@path}/feature.zucchini").read.gsub(/#.+\n/,"").gsub(/\n/, "\\n")
+    feature_text = File.open("#{@path}/feature.zucchini").read.gsub(/\#.+[\z\n]?/,"").gsub(/\n/, "\\n")
     File.open("#{run_data_path}/feature.coffee", "w+") { |f| f.write("Zucchini.run('#{feature_text}')") }
-    `coffee -o #{run_data_path} -j #{run_data_path}/feature.js -c #{zucchini_base_path}/lib/uia #{@path}/../support/screens #{run_data_path}/feature.coffee`
+
+    cs_paths  = "#{zucchini_base_path}/lib/uia #{@path}/../support/screens"
+    cs_paths += " #{@path}/../support/lib" if File.exists?("#{@path}/../support/lib")
+    cs_paths += " #{run_data_path}/feature.coffee"
+    
+    `coffee -o #{run_data_path} -j #{run_data_path}/feature.js -c #{cs_paths}`
   end
 
   def collect
