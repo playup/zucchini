@@ -16,7 +16,8 @@ puts = (text) ->
   UIALogger.logMessage text
 
 target = UIATarget.localTarget()
-view   = target.frontMostApp().mainWindow()
+app    = target.frontMostApp()
+view   = app.mainWindow()
 
 target.waitForElement = (element) ->
   return  unless element
