@@ -19,6 +19,15 @@ target = UIATarget.localTarget()
 app    = target.frontMostApp()
 view   = app.mainWindow()
 
+UIAElement.prototype.$ = (name) ->
+  target.pushTimeout(0)
+  elem = null
+  for el in this.elements()
+    elem = if el.name() == name then el else el.$(name)
+    break if elem
+  target.popTimeout()
+  elem
+
 target.waitForElement = (element) ->
   return  unless element
   found = false
