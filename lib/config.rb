@@ -30,8 +30,7 @@ module Zucchini
         :name   => device_name,
         :udid   => device['UDID'],
         :screen => device['screen'],
-        :simfamily  => device['simfamily'],
-        :simOS => device['simOS']
+        :simfamily  => device['simfamily']
       }
     end
     
