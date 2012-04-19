@@ -24,6 +24,41 @@ class Zucchini::Runner < Clamp::Command
   def run
     compare_threads = {}
     
+    device_size = ""
+    if(@device[:name] == "iOS Simulator" && @device[:simfamily] != nil)
+      #Kill the simulator if it's already running
+      out = `array=$(ps -ax | grep -i "Simulator" | awk ' { print $1 } '); for PID in $array; do kill $PID; done;`
+      puts out
+      
+      # Figure out which simulator to use...
+      if(@device[:simfamily] == "iPad" || @device[:simfamily] == "ipad" )
+        uidevicefamily = 2
+        device_size = "iPad"
+      else
+        uidevicefamily = 1  
+        device_size = "iPhone"        
+      end
+      # And at what resolution
+      if @device[:screen].include?("retina") then
+        if uidevicefamily == 2 then
+          device_size = "iPad (Retina)"
+        else
+          device_size = "iPhone (Retina)"
+        end
+      end
+      
+      # Set up the simulator's device size...
+      `defaults write com.apple.iphonesimulator "SimulateDevice" '"#{device_size}"'`
+      
+      # Plist tool and file to edit
+      plistbuddy = "/usr/libexec/PlistBuddy"
+      plistfile = "#{Zucchini::Config.app}/Info.plist"
+      # Set the plist items to the correct values
+      `#{plistbuddy} -c "Delete :UIDeviceFamily" #{plistfile}`
+      `#{plistbuddy} -c "Add :UIDeviceFamily array" #{plistfile}`
+      `#{plistbuddy} -c "Add :UIDeviceFamily:0 integer #{uidevicefamily}" #{plistfile}`
+    end
+    
     features.each do |f|
       f.device   = @device
       f.template = @template
