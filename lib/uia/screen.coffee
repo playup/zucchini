@@ -19,3 +19,8 @@ class Screen
 
     'Confirm "([^"]*)"$' : (element) ->
       @actions['Tap "([^"]*)"$'].bind(this)(element)
+
+    'Dismiss the alert' : ->
+      alert = app.alert()
+      throw "No alert found to dismiss on screen '#{@name}'" if isNullElement alert
+      alert.defaultButton().tap()
