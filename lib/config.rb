@@ -13,7 +13,7 @@ module Zucchini
     end
                   
     def self.app
-      @@config['app']
+      File.absolute_path(@@config['app'])
     end
   
     def self.resolution_name(dimension)   
