@@ -60,6 +60,19 @@ devices:
     screen: low_ios5
 ```
 
+Alternatively, you can specify the app path in the device section:
+
+```
+devices:
+  iOS Simulator:
+    screen: low_ios5
+    app: ./Build/Products/Debug-iphonesimulator/CoreDataBooks.app
+  iPad2:
+    screen: ipad_ios5
+    app: ./Build/Products/Debug-iphoneos/CoreDataBooks.app
+```
+
+
 Run it as usual:
 
 ```
