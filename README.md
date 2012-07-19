@@ -46,10 +46,10 @@ Running on the iOS Simulator
 -------------------------------
 We strongly encourage you to run your Zucchini features on real hardware. However, you can run them on the iOS Simulator if you must.
 
-First off, modify your features/support/config.yml to include a full path to your compiled app, e.g.
+First off, modify your features/support/config.yml to include the path to your compiled app, e.g.
 
 ```
-app: /Users/vaskas/Library/Developer/Xcode/DerivedData/CoreDataBooks-ebeqiuqksrwwoscupvxuzjzrdfjz/Build/Products/Debug-iphonesimulator/CoreDataBooks.app
+app: ./Build/Products/Debug-iphonesimulator/CoreDataBooks.app
 ```
 
 Secondly, add an 'iOS Simulator' entry to the devices section (no UDID needed) and make sure you provide the actual value for 'screen' based on your iOS Simulator settings:
@@ -59,6 +59,19 @@ devices:
   iOS Simulator:
     screen: low_ios5
 ```
+
+Alternatively, you can specify the app path in the device section:
+
+```
+devices:
+  iOS Simulator:
+    screen: low_ios5
+    app: ./Build/Products/Debug-iphonesimulator/CoreDataBooks.app
+  iPad2:
+    screen: ipad_ios5
+    app: ./Build/Products/Debug-iphoneos/CoreDataBooks.app
+```
+
 
 Run it as usual:
 
