@@ -69,9 +69,14 @@ class Zucchini::Runner < Clamp::Command
   end
 
   def detect_template
-    path  = `xcode-select -print-path`.gsub(/\n/, '')
-    path += "/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
-    raise "Instruments template at #{path} does not exist" unless File.exists? path
-    path
+    locations = [
+      `xcode-select -print-path`.gsub(/\n/, '') + "/Platforms/iPhoneOS.platform/Developer/Library/Instruments",
+       "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents" # Xcode 4.5
+    ].map do |start_path|
+      "#{start_path}/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate"
+    end
+
+    locations.each { |path| return path if File.exists?(path) }
+    raise "Can't find Instruments template (tried #{locations.join(', ')})"
   end
 end
