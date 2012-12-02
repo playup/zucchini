@@ -1,10 +1,12 @@
 Pre-requisites
 --------------
- 1. XCode 4.2
- 2. A few command line tools:
+ 1. Mac OS X >= 10.6
+ 2. XCode >= 4.2
+ 3. Ruby >= 1.9.2
+ 4. A few command line tools:
 
 ```
-brew update && brew install imagemagick && brew install coffee-script 
+brew update && brew install imagemagick && brew install coffee-script
 ```
 
 Start using Zucchini
@@ -22,7 +24,7 @@ Start by creating a project scaffold:
 zucchini generate --project /path/to/my_project
 ```
 
-Create a feature scaffold for your first feature:  
+Create a feature scaffold for your first feature:
 
 ```
 zucchini generate --feature /path/to/my_project/features/my_feature
@@ -39,7 +41,7 @@ Add your device to features/support/config.yml.
 The [udidetect](https://github.com/vaskas/udidetect) utility comes in handy if you plan to add devices from time to time: `udidetect -z`.
 
 ```
-ZUCCHINI_DEVICE="My Device" zucchini run /path/to/my_feature 
+ZUCCHINI_DEVICE="My Device" zucchini run /path/to/my_feature
 ```
 
 Running on the iOS Simulator
@@ -76,13 +78,13 @@ devices:
 Run it as usual:
 
 ```
-ZUCCHINI_DEVICE="iOS Simulator" zucchini run /path/to/my_feature 
+ZUCCHINI_DEVICE="iOS Simulator" zucchini run /path/to/my_feature
 ```
 
 See also
 ---------
 ```
-zucchini --help  
-zucchini run --help  
+zucchini --help
+zucchini run --help
 zucchini generate --help
 ```
