@@ -1,8 +1,7 @@
 app: MyApp.app
-template: '/Developer/Platforms/iPhoneOS.platform/Developer/Library/Instruments/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate'
 
 devices:
-  My iDevice: 
+  My iDevice:
     UDID  : lolffb28d74a6fraj2156090784avasc50725dd0
     screen: ipad_ios5
 
