@@ -64,7 +64,7 @@ class Zucchini::Feature
       device_params = (@device[:name] == "iOS Simulator") ? "" : "-w #{@device[:udid]}"
       
       begin
-        out = `instruments #{device_params} -t #{@template} #{Zucchini::Config.app} -e UIASCRIPT #{run_data_path}/feature.js -e UIARESULTSPATH #{run_data_path} 2>&1`
+        out = `instruments #{device_params} -t "#{@template}" "#{Zucchini::Config.app}" -e UIASCRIPT "#{run_data_path}/feature.js" -e UIARESULTSPATH "#{run_data_path}" 2>&1`
         puts out
         # Hack. Instruments don't issue error return codes when JS exceptions occur
         raise "Instruments run error" if (out.match /JavaScript error/) || (out.match /Instruments\ .{0,5}\ Error\ :/ )
