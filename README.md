@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/vaskas/zucchini.png?branch=master)](http://travis-ci.org/vaskas/zucchini)
+
 Pre-requisites
 --------------
  1. Mac OS X >= 10.6
