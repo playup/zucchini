@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/vaskas/zucchini.png?branch=master)](http://travis-ci.org/vaskas/zucchini)
+[![Build Status](https://secure.travis-ci.org/zucchini-src/zucchini.png?branch=master)](http://travis-ci.org/zucchini-src/zucchini)
 
 Pre-requisites
 --------------
