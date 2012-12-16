@@ -15,6 +15,13 @@ extend = (obj, mixin) ->
 puts = (text) ->
   UIALogger.logMessage text
 
+isNullElement = (element) ->
+  element.toString() == "[object UIAElementNil]"
+
+# Prevent UIA from auto handling alerts
+UIATarget.onAlert = (alert) ->
+	return true
+
 target = UIATarget.localTarget()
 app    = target.frontMostApp()
 view   = app.mainWindow()
