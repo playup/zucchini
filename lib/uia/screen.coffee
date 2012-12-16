@@ -11,7 +11,7 @@ class Screen
       target.captureScreenWithName(name)
 
     'Tap "([^"]*)"$' : (element) ->
-      throw "Element '#{element}' not defined for the screen '#{@name}'" unless @elements[element]
+      raise "Element '#{element}' not defined for the screen '#{@name}'" unless @elements[element]
       @elements[element]().tap()
 
     'Confirm "([^"]*)"$' : (element) ->
@@ -21,21 +21,21 @@ class Screen
       target.delay(seconds)
 
     'Type "([^"]*)" in the "([^"]*)" field$': (text,element) ->
-      throw "Element '#{element}' not defined for the screen '#{@name}'" unless @elements[element]
+      raise "Element '#{element}' not defined for the screen '#{@name}'" unless @elements[element]
       @elements[element]().tap()
       app.keyboard().typeString text
 
     'Clear the "([^"]*)" field$': (element) ->
-      throw "Element '#{element}' not defined for the screen '#{@name}'" unless @elements[element]
+      raise "Element '#{element}' not defined for the screen '#{@name}'" unless @elements[element]
       @elements[element]().setValue ""
 
     'Cancel the alert' : ->
       alert = app.alert()
-      throw "No alert found to dismiss on screen '#{@name}'" if isNullElement alert
+      raise "No alert found to dismiss on screen '#{@name}'" if isNullElement alert
       alert.cancelButton().tap()
 
     'Confirm the alert' : ->
       alert = app.alert()
-      throw "No alert found to dismiss on screen '#{@name}'" if isNullElement alert
+      raise "No alert found to dismiss on screen '#{@name}'" if isNullElement alert
       alert.defaultButton().tap()
 
