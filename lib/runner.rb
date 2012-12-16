@@ -5,6 +5,8 @@ class Zucchini::Runner < Clamp::Command
 
   option %W(-c --collect), :flag, "only collect the screenshots from the device"
   option %W(-p --compare), :flag, "perform screenshots comparison based on the last collection"
+  option %W(-s --silent),  :flag, "do not open the report"
+
   option "--ci",           :flag, "produce a CI version of the report after comparison"
 
   def execute
@@ -36,7 +38,11 @@ class Zucchini::Runner < Clamp::Command
 
     compare_threads.each { |name, t| t.abort_on_exception = true; t.join }
 
-    Zucchini::Report.present(features, ci?) unless (collect? && !compare?)
+    unless (collect? && !compare?)
+      report = Zucchini::Report.new(features, ci?)
+      report.open unless silent?
+    end
+
     features.inject(true){ |result, feature| result &= feature.succeeded }
   end
 
