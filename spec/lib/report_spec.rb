@@ -15,19 +15,17 @@ describe Zucchini::Report do
     feature
   end
 
-  subject { Zucchini::Report.new([feature]) }
+  let(:html_path) { '/tmp/zucchini_rspec_report.html' }
+  after           { FileUtils.rm(html_path) }
+
+  subject { Zucchini::Report.new([feature], false, html_path) }
   before  { Zucchini::Report.any_instance.stub(:log) }
 
   its(:text) { should eq "feature:\n4 passed, 3 failed, 0 pending\n\nFailed:\n   1.screen_1.png: 120\n   2.screen_2.png: 120\n   3.screen_3.png: 120\n" }
 
-  describe "HTML" do
-    let(:report_html_path) { "/tmp/zucchini_rspec_report.html" }
-    after { FileUtils.rm(report_html_path) }
-
-    it "should produce a a correct HTML report" do
-      report = File.open(subject.html(report_html_path)).read
-      report.scan(/<dl class="passed.*screen/).length.should eq 4
-      report.scan(/<dl class="failed.*screen/).length.should eq 3
-    end
+  it "should produce a a correct HTML report" do
+    report = subject.html
+    report.scan(/<dl class="passed.*screen/).length.should eq 4
+    report.scan(/<dl class="failed.*screen/).length.should eq 3
   end
 end

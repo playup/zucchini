@@ -3,9 +3,9 @@ require 'lib/report/view'
 
 class Zucchini::Report
 
-  def initialize(features, ci = false)
-    @features, @ci = [features, ci]
-    log text
+  def initialize(features, ci = false, html_path = '/tmp/zucchini_report.html')
+    @features, @ci, @html_path = [features, ci, html_path]
+    generate!
   end
 
   def text
@@ -17,17 +17,25 @@ class Zucchini::Report
     end.join("\n\n")
   end
 
-  def html(report_html_path = "/tmp/zucchini_report.html")
-    template_path = File.expand_path("#{File.dirname(__FILE__)}/report/template.erb")
+  def html
+    @html ||= begin
+      template_path = File.expand_path("#{File.dirname(__FILE__)}/report/template.erb")
 
-    view = Zucchini::ReportView.new(@features, @ci)
-    html = (ERB.new(File.open(template_path).read)).result(view.get_binding)
+      view = Zucchini::ReportView.new(@features, @ci)
+      compiled = (ERB.new(File.open(template_path).read)).result(view.get_binding)
 
-    File.open(report_html_path, 'w+') { |f| f.write(html) }
-    report_html_path
+      File.open(@html_path, 'w+') { |f| f.write(compiled) }
+      compiled
+    end
   end
 
-  def open; system "open #{html}"; end
+  def generate!
+    log text
+    html
+  end
+
+  def open; system "open #{@html_path}"; end
+
   def log(buf); puts buf; end
 
 end
