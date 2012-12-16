@@ -76,5 +76,5 @@ class Zucchini
             match = line.trim().match(new RegExp(regExpText))
             if match
               functionFound = true
-              func.bind(screen)(match[1])
+              func.bind(screen)(match[1],match[2])
          throw "Action for line '#{line}' not defined" unless functionFound
