@@ -8,7 +8,11 @@ Pre-requisites
  4. A few command line tools:
 
 ```
-brew update && brew install imagemagick && brew install coffee-script
+brew update && brew install imagemagick && brew install node
+```
+
+```
+npm install -g coffee-script
 ```
 
 Start using Zucchini
