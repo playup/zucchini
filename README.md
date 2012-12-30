@@ -8,10 +8,7 @@ Pre-requisites
  4. A few command line tools:
 
 ```
-brew update && brew install imagemagick && brew install node
-```
-
-```
+brew update && brew install imagemagick node
 npm install -g coffee-script
 ```
 
