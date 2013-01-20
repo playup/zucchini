@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.date        = Date.today.to_s
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Vasily Mikhaylichenko", "Rajesh Kumar", "Kevin O'Neill"]
+  s.license     = "BSD"
   s.email       = ["vaskas@zucchiniframework.org"]
   s.homepage    = "http://www.zucchiniframework.org"
   s.summary     = %q{Functional testing framework for iOS-powered devices}
