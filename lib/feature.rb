@@ -27,11 +27,13 @@ class Zucchini::Feature
     end
   end
   
-  def screenshots
+  def screenshots(process = true)
     @screenshots ||= Dir.glob("#{run_data_path}/Run\ 1/*.png").map do |file|
       screenshot = Zucchini::Screenshot.new(file, @device)
-      screenshot.mask
-      screenshot.compare
+      if process
+        screenshot.mask
+        screenshot.compare
+      end
       screenshot
     end + unmatched_pending_screenshots
   end
@@ -96,7 +98,7 @@ class Zucchini::Feature
   def approve(reference_type)
     raise "Directory #{path} doesn't contain previous run data" unless File.exists?("#{run_data_path}/Run\ 1")
 
-    screenshots.each do |s|
+    screenshots(false).each do |s|
       reference_file_path = "#{File.dirname(s.file_path)}/../../#{reference_type}/#{device[:screen]}/#{s.file_name}"
       FileUtils.mkdir_p File.dirname(reference_file_path)
       @succeeded = FileUtils.copy_file(s.file_path, reference_file_path)
