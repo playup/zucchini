@@ -10,10 +10,12 @@ require 'lib/report'
 require 'lib/feature'
 require 'lib/runner'
 require 'lib/generator'
+require 'lib/approver'
                 
 class Zucchini::App < Clamp::Command
   subcommand "generate", "Generate a project scaffold", Zucchini::Generator
   subcommand "run", "Run zucchini", Zucchini::Runner
+  subcommand "approve", "Update reference screenshots", Zucchini::Approver
 end
 
 Zucchini::App.run

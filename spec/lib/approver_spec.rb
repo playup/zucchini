@@ -1,29 +1,34 @@
 require 'spec_helper'
 
-describe Zucchini::Runner do
+describe Zucchini::Approver do
   before (:each) do
-    runner.path = "spec/sample_setup/feature_one"
+    approver.path = "spec/sample_setup/feature_one"
     ENV['ZUCCHINI_DEVICE'] = 'My iDevice'
   end 
    
-  let (:runner) { Zucchini::Runner.new(nil) }
-  
+  let (:approver) { Zucchini::Approver.new(nil) }
+
   describe "execute" do
-    subject { lambda { runner.execute } }
+    subject { lambda { approver.execute } }
     
     context "feature directory doesn't exist" do
-      before { runner.path = "spec/sample_setup/erroneous_feature" }
+      before { approver.path = "spec/sample_setup/erroneous_feature" }
       it     { should raise_error "Directory spec/sample_setup/erroneous_feature does not exist" }
     end
-    
+
+    context "previous run data doesn't exist" do
+      before { approver.path = "spec/sample_setup/feature_three" }
+      it { should raise_error "Directory #{File.expand_path 'spec/sample_setup/feature_three'} doesn't contain previous run data" }
+    end
+
     context "device hasn't been found" do
       before { ENV['ZUCCHINI_DEVICE'] = 'My Android Phone' }
       it     { should raise_error "Device not listed in config.yml" }
     end
   end
-  
+
   describe "detect features" do
-    subject { lambda { runner.detect_features(@path) } }
+    subject { lambda { approver.detect_features(@path) } }
     
     context "path to a single feature" do
       before { @path = "spec/sample_setup/feature_one" }
