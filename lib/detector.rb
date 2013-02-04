@@ -9,7 +9,6 @@ class Zucchini::Detector < Clamp::Command
     @path = File.expand_path(path)
     Zucchini::Config.base_path = File.exists?("#{path}/feature.zucchini") ? File.dirname(path) : path
 
-    raise "ZUCCHINI_DEVICE environment variable not set" unless ENV['ZUCCHINI_DEVICE']
     @device = Zucchini::Config.device(ENV['ZUCCHINI_DEVICE'])
     
     @template = detect_template

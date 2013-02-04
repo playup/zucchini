@@ -7,7 +7,6 @@ devices:
 
   Default Device:
     screen : low_ios5
-    default: true
 
 
 servers:

@@ -10,10 +10,17 @@ module Zucchini
     def self.base_path=(base_path)
       @@base_path = base_path
       @@config    = YAML::load_file("#{base_path}/support/config.yml")
+      @@default_device_name = nil
+      devices.each do |device_name, device|
+        if device['default']
+          raise "Default device already provided" if @@default_device_name
+          @@default_device_name = device_name
+        end
+      end
     end
 
     def self.app
-      device_name = ENV['ZUCCHINI_DEVICE']
+      device_name = ENV['ZUCCHINI_DEVICE'] || @@default_device_name
       app_path    = File.absolute_path(devices[device_name]['app'] || @@config['app'])
 
       if device_name == 'iOS Simulator' && !File.exists?(app_path)
@@ -30,7 +37,13 @@ module Zucchini
       @@config['devices']
     end
 
+    def self.default_device_name
+      @@default_device_name
+    end
+
     def self.device(device_name)
+      device_name ||= @@default_device_name
+      raise "Neither default device nor ZUCCHINI_DEVICE environment variable was set" unless device_name
       raise "Device not listed in config.yml" unless (device = devices[device_name])
       {
         :name   => device_name,
