@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zucchini-ios (0.5.6)
+    zucchini-ios (0.5.9)
       clamp
 
 GEM
