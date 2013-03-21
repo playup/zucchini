@@ -29,12 +29,12 @@ class Screen
       raise "Element '#{element}' not defined for the screen '#{@name}'" unless @elements[element]
       @elements[element]().setValue ""
 
-    'Cancel the alert' : ->
+    'Cancel the alert$' : ->
       alert = app.alert()
       raise "No alert found to dismiss on screen '#{@name}'" if isNullElement alert
       alert.cancelButton().tap()
 
-    'Confirm the alert' : ->
+    'Confirm the alert$' : ->
       alert = app.alert()
       raise "No alert found to dismiss on screen '#{@name}'" if isNullElement alert
       alert.defaultButton().tap()
