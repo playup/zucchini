@@ -21,7 +21,7 @@ module Zucchini
 
     def self.app
       device_name = ENV['ZUCCHINI_DEVICE'] || @@default_device_name
-      app_path    = File.absolute_path(devices[device_name]['app'] || @@config['app'])
+      app_path    = File.absolute_path(devices[device_name]['app'] || @@config['app'] || ENV['ZUCCHINI_APP'])
 
       if device_name == 'iOS Simulator' && !File.exists?(app_path)
         raise "Can't find application at path #{app_path}"
