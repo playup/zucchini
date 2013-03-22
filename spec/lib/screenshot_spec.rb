@@ -24,7 +24,7 @@ describe Zucchini::Screenshot do
   end
   
   describe "mask" do
-    before(:all) do
+    before do
       @md5 = {
         :original            => md5(File.read(original_path)),
         :globally_masked     => md5(File.read(screenshot.masked_paths[:globally])),
