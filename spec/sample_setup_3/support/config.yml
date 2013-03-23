@@ -1,0 +1,13 @@
+devices:
+  My iDevice:
+    UDID  : lolffb28d74a6fraj2156090784avasc50725dd0
+    screen: ipad_ios5
+
+  Default Device:
+    screen : low_ios5
+    default: true
+
+servers:
+  backend:
+    host: 192.168.1.2
+    port: 8080
