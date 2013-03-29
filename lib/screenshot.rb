@@ -45,10 +45,8 @@ class Zucchini::Screenshot
       0
     end
     original_path = File.join(@file_base_path, @unrotated_file_name)
-    convert_cmd = "convert \"#{original_path}\" -rotate \"#{degrees}\" \"#{@file_path}\""
-    puts convert_cmd
-    `#{convert_cmd}`
-    #FileUtils.rm original_path
+    `convert \"#{original_path}\" -rotate \"#{degrees}\" \"#{@file_path}\"`
+    FileUtils.rm original_path
   end
 
   def mask
