@@ -3,9 +3,18 @@ class Zucchini::Screenshot
   attr_accessor :diff, :masks_paths, :masked_paths, :test_path, :diff_path, :compare_cmd
 
   def initialize(file_path, device, unmatched_pending = false)
-    @file_path = file_path
-    @file_name = File.basename(@file_path)
+    file_name = File.basename(file_path)
     @device    = device
+
+    orientation_match = /^\d\d_(?<orientation>[^_]+)_.*$/.match(file_name)
+    if orientation_match && orientation_match[:orientation]
+      @unrotated_file_name = file_name
+      @file_name = file_name.gsub("_#{orientation_match[:orientation]}", '')
+      @file_path = File.join(File.dirname(file_path),@file_name)
+    else
+      @file_name = file_name
+      @file_path = file_path
+    end
 
     @compare_cmd = "compare -metric AE -fuzz 2% -dissimilarity-threshold 1 -subimage-search"
 
@@ -27,7 +36,7 @@ class Zucchini::Screenshot
   end
 
   def rotate
-    return unless regex_match = /^\d\d_(?<orientation>[^_]+)_.*$/.match(@file_name)
+    return unless regex_match = /^\d\d_(?<orientation>[^_]+)_.*$/.match(@unrotated_file_name)
     degrees = case regex_match[:orientation]
     when 'LandscapeRight' then 90
     when 'LandscapeLeft' then 270
@@ -35,7 +44,9 @@ class Zucchini::Screenshot
     else
       0
     end
-    `convert \"#{@file_path}\" -rotate \"#{degrees}\" \"#{@file_path}\"`
+    original_path = File.join(@file_base_path, @unrotated_file_name)
+    `convert \"#{original_path}\" -rotate \"#{degrees}\" \"#{@file_path}\"`
+    FileUtils.rm original_path
   end
 
   def mask
