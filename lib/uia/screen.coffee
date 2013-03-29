@@ -8,7 +8,7 @@ class Screen
       when 4 then 'LandscapeRight'
       when 5 then 'FaceUp'
       when 6 then 'FaceDown'
-    target.captureScreenWithName("#{orientation}_name")
+    target.captureScreenWithName("#{orientation}_#{name}")
 
   constructor: (@name) ->
     if @anchor then target.waitForElement @anchor()
