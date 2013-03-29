@@ -1,5 +1,5 @@
 class Screen
-  @takeScreenshot: (name) ->
+  takeScreenshot: (name) ->
     orientation = switch app.interfaceOrientation()
       when 0 then 'Unknown'
       when 1 then 'Portrait'
