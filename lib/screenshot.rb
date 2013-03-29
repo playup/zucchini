@@ -45,7 +45,9 @@ class Zucchini::Screenshot
       0
     end
     original_path = File.join(@file_base_path, @unrotated_file_name)
-    `convert \"#{original_path}\" -rotate \"#{degrees}\" \"#{@file_path}\"`
+    convert_cmd = "convert \"#{original_path}\" -rotate \"#{degrees}\" \"#{@file_path}\""
+    puts convert_cmd
+    `#{convert_cmd}`
     FileUtils.rm original_path
   end
 
