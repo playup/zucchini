@@ -26,6 +26,18 @@ class Zucchini::Screenshot
     end
   end
 
+  def rotate
+    regex_match = /^\d\d_(?<orientation>[^_]+)_.*$/.match(@file_path)
+    degrees = case regex_match[:orientation]
+    when 'LandscapeRight' then 90
+    when 'LandscapeLeft' then 270
+    when 'PortraitUpsideDown' then 180
+    else
+      0
+    end
+    `convert \"#{@file_path}\" -rotate \"#{degrees}\" \"#{@file_path}\"`
+  end
+
   def mask
     @masked_paths.each { |name, path| FileUtils.mkdir_p(File.dirname(path)) }
     `convert -page +0+0 \"#{@file_path}\" -page +0+0 \"#{@masks_paths[:global]}\" -flatten \"#{@masked_paths[:globally]}\"`
