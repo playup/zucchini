@@ -1,4 +1,6 @@
 class Zucchini::Screenshot
+  ORIENTATION = /^\d\d_(?<orientation>[(Unknown)|(Portrait)|(PortraitUpsideDown)|(LandscapeLeft)|(LandscapeRight)|(FaceUp)|(FaceDown)])_.*$/
+
   attr_reader   :file_path, :file_name
   attr_accessor :diff, :masks_paths, :masked_paths, :test_path, :diff_path, :compare_cmd
 
@@ -6,9 +8,9 @@ class Zucchini::Screenshot
     file_name = File.basename(file_path)
     @device    = device
 
-    orientation_match = /^\d\d_(?<orientation>[^_]+)_.*$/.match(file_name)
-    if orientation_match && orientation_match[:orientation]
-      @unrotated_file_name = file_name
+    @orientation = (match = ORIENTATION.match(file_name)) ? match[:orientation] : nil
+    if @orientation
+      @original_file_path = file_path
       @file_name = file_name.gsub("_#{orientation_match[:orientation]}", '')
       @file_path = File.join(File.dirname(file_path),@file_name)
     else
@@ -36,16 +38,15 @@ class Zucchini::Screenshot
   end
 
   def rotate
-    return unless regex_match = /^\d\d_(?<orientation>[^_]+)_.*$/.match(@unrotated_file_name)
-    degrees = case regex_match[:orientation]
+    return unless @orientation
+    degrees = case @orientation
     when 'LandscapeRight' then 90
     when 'LandscapeLeft' then 270
     when 'PortraitUpsideDown' then 180
     else
       0
     end
-    original_path = File.join(@file_base_path, @unrotated_file_name)
-    `convert \"#{original_path}\" -rotate \"#{degrees}\" \"#{@file_path}\"`
+    `convert \"#{@original_file_path}\" -rotate \"#{degrees}\" \"#{@file_path}\"`
     FileUtils.rm original_path
   end
 
