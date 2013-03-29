@@ -27,7 +27,7 @@ class Zucchini::Screenshot
   end
 
   def rotate
-    regex_match = /^\d\d_(?<orientation>[^_]+)_.*$/.match(@file_path)
+    return unless regex_match = /^\d\d_(?<orientation>[^_]+)_.*$/.match(@file_name)
     degrees = case regex_match[:orientation]
     when 'LandscapeRight' then 90
     when 'LandscapeLeft' then 270
