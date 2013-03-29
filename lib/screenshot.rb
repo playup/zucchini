@@ -48,7 +48,7 @@ class Zucchini::Screenshot
     convert_cmd = "convert \"#{original_path}\" -rotate \"#{degrees}\" \"#{@file_path}\""
     puts convert_cmd
     `#{convert_cmd}`
-    FileUtils.rm original_path
+    #FileUtils.rm original_path
   end
 
   def mask
