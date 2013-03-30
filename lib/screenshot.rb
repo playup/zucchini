@@ -1,29 +1,49 @@
 class Zucchini::Screenshot
+  ORIENTATION = /^\d\d_(?<orientation>(Unknown|Portrait|PortraitUpsideDown|LandscapeLeft|LandscapeRight|FaceUp|FaceDown))_.*$/
+
   attr_reader   :file_path, :file_name
-  attr_accessor :diff, :masks_paths, :masked_paths, :test_path, :diff_path, :compare_cmd
+  attr_accessor :diff, :masks_paths, :masked_paths, :test_path, :diff_path
 
   def initialize(file_path, device, unmatched_pending = false)
-    @file_path = file_path
-    @file_name = File.basename(@file_path)
+    file_name = File.basename(file_path)
+    @original_file_path = file_path
     @device    = device
 
-    @compare_cmd = "compare -metric AE -fuzz 2% -dissimilarity-threshold 1 -subimage-search"
+    @orientation = (match = ORIENTATION.match(file_name)) ? match[:orientation] : nil
+    if @orientation
+      @file_name = file_name.gsub("_#{@orientation}", '')
+      @file_path = File.join(File.dirname(file_path),@file_name)
+    else
+      @file_name = file_name
+      @file_path = file_path
+    end
 
     unless unmatched_pending
-      @file_base_path = File.dirname(@file_path)
+      file_base_path = File.dirname(@file_path)
 
       @masks_paths = {
-        :global   => "#{@file_base_path}/../../../support/masks/#{@device[:screen]}.png",
-        :specific => "#{@file_base_path}/../../masks/#{@device[:screen]}/#{@file_name}"
+        :global   => "#{file_base_path}/../../../support/masks/#{@device[:screen]}.png",
+        :specific => "#{file_base_path}/../../masks/#{@device[:screen]}/#{@file_name}"
       }
 
-      masked_path   = "#{@file_base_path}/../Masked/actual/#{@file_name}"
+      masked_path   = "#{file_base_path}/../Masked/actual/#{@file_name}"
       @masked_paths = { :globally => masked_path, :specifically => masked_path }
 
-      @test_path = nil
-      @pending   = false
-      @diff_path = "#{@file_base_path}/../Diff/#{@file_name}"
+      @diff_path = "#{file_base_path}/../Diff/#{@file_name}"
     end
+  end
+
+  def rotate
+    return unless @orientation
+    degrees = case @orientation
+    when 'LandscapeRight' then 90
+    when 'LandscapeLeft' then 270
+    when 'PortraitUpsideDown' then 180
+    else
+      0
+    end
+    `convert \"#{@original_file_path}\" -rotate \"#{degrees}\" \"#{@file_path}\"`
+    FileUtils.rm @original_file_path
   end
 
   def mask
@@ -41,7 +61,8 @@ class Zucchini::Screenshot
     if @test_path
       FileUtils.mkdir_p(File.dirname(@diff_path))
 
-      out = `#{@compare_cmd} \"#{@masked_paths[:specifically]}\" \"#{@test_path}\" \"#{@diff_path}\" 2>&1`
+      compare_command = "compare -metric AE -fuzz 2% -dissimilarity-threshold 1 -subimage-search"
+      out = `#{compare_command} \"#{@masked_paths[:specifically]}\" \"#{@test_path}\" \"#{@diff_path}\" 2>&1`
       @diff = (out == "0\n") ? [:passed, nil] : [:failed, out]
       @diff = [:pending, @diff[1]] if @pending
     else
@@ -58,9 +79,10 @@ class Zucchini::Screenshot
   end
 
   def mask_reference
+    file_base_path = File.dirname(@file_path)
     %W(reference pending).each do |reference_type|
-      reference_file_path = "#{@file_base_path}/../../#{reference_type}/#{@device[:screen]}/#{@file_name}"
-      output_path         = "#{@file_base_path}/../Masked/#{reference_type}/#{@file_name}"
+      reference_file_path = "#{file_base_path}/../../#{reference_type}/#{@device[:screen]}/#{@file_name}"
+      output_path         = "#{file_base_path}/../Masked/#{reference_type}/#{@file_name}"
 
       if File.exists?(reference_file_path)
         @test_path = output_path

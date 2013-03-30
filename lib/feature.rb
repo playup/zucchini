@@ -31,6 +31,7 @@ class Zucchini::Feature
     @screenshots ||= Dir.glob("#{run_data_path}/Run\ 1/*.png").map do |file|
       screenshot = Zucchini::Screenshot.new(file, @device)
       if process
+        screenshot.rotate
         screenshot.mask
         screenshot.compare
       end
