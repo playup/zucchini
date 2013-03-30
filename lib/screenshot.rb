@@ -6,11 +6,11 @@ class Zucchini::Screenshot
 
   def initialize(file_path, device, unmatched_pending = false)
     file_name = File.basename(file_path)
+    @original_file_path = file_path
     @device    = device
 
     @orientation = (match = ORIENTATION.match(file_name)) ? match[:orientation] : nil
     if @orientation
-      @original_file_path = file_path
       @file_name = file_name.gsub("_#{@orientation}", '')
       @file_path = File.join(File.dirname(file_path),@file_name)
     else
