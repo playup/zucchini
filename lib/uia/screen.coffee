@@ -67,3 +67,6 @@ class Screen
       raise "Counldn't find the month #{dateParts[2]}" unless counter <12
       # Set Year
       view.pickers()[0].wheels()[2].selectValue(dateParts[3])
+
+    'Show elements' : ->
+      view.logElementTree()
