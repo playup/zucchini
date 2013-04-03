@@ -35,7 +35,7 @@ zucchini generate --feature /path/to/my_project/features/my_feature
 
 Start hacking by modifying features/my_feature/feature.zucchini and features/support/screens/welcome.coffee.
 
-Alternatively, check out the [zucchini-demo](https://github.com/rajbeniwal/zucchini-demo) project featuring an easy to explore Zucchini setup around Apple's CoreDataBooks sample.
+Alternatively, check out the [zucchini-demo](https://github.com/zucchini-src/zucchini-demo) project featuring an easy to explore Zucchini setup around Apple's CoreDataBooks sample.
 
 Running on the device
 --------------------------------
