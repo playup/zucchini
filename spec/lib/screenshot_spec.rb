@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'digest/md5'
+require 'tmpdir'
 
 def md5(blob)
   Digest::MD5.hexdigest(blob)
@@ -24,7 +25,7 @@ describe Zucchini::Screenshot do
   end
   
   describe "mask" do
-    before(:all) do
+    before do
       @md5 = {
         :original            => md5(File.read(original_path)),
         :globally_masked     => md5(File.read(screenshot.masked_paths[:globally])),
@@ -68,6 +69,41 @@ describe Zucchini::Screenshot do
       
       File.exists?(screenshot.test_path).should be_true
       md5(File.read(screenshot.test_path)).should_not be_equal md5(File.read("#{base_path}/reference/#{device[:screen]}/06_sign\ up_spinner.png"))
+    end
+  end
+
+  describe "rotate" do
+    let (:sample_screenshots_path) { "spec/sample_screenshots" }
+    let (:reference_screenshot_path) { File.join(sample_screenshots_path, "rotated/01_Screenshot.png") }
+    let (:reference_md5) { md5(File.read(reference_screenshot_path)) }
+    let (:temp_dir) { Dir.mktmpdir }
+    before do
+      `cp #{File.join(sample_screenshots_path, "*")} #{temp_dir}`
+    end
+
+    it "should rotate the landscape-left screenshot" do
+      screenshot = Zucchini::Screenshot.new(File.join(temp_dir,'01_LandscapeLeft_Screenshot.png'), nil, true)
+      screenshot.rotate
+      File.exists?(File.join(temp_dir,'01_LandscapeLeft_Screenshot.png')).should be_false
+      File.exists?(File.join(temp_dir,'01_Screenshot.png')).should be_true
+    end
+
+    it "should rotate the landscape-right screenshot" do
+      screenshot = Zucchini::Screenshot.new(File.join(temp_dir,'02_LandscapeRight_Screenshot.png'), nil, true)
+      screenshot.rotate
+      File.exists?(File.join(temp_dir,'02_LandscapeRight_Screenshot.png')).should be_false
+      File.exists?(File.join(temp_dir,'02_Screenshot.png')).should be_true
+    end
+
+    it "should rotate the upside-down screenshot" do
+      screenshot = Zucchini::Screenshot.new(File.join(temp_dir,'03_PortraitUpsideDown_Screenshot.png'), nil, true)
+      screenshot.rotate
+      File.exists?(File.join(temp_dir,'02_PortraitUpsideDown_Screenshot.png')).should be_false
+      File.exists?(File.join(temp_dir,'03_Screenshot.png')).should be_true
+    end
+
+    after do
+      FileUtils.remove_entry temp_dir
     end
   end
 end

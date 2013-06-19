@@ -27,11 +27,14 @@ class Zucchini::Feature
     end
   end
   
-  def screenshots
+  def screenshots(process = true)
     @screenshots ||= Dir.glob("#{run_data_path}/Run\ 1/*.png").map do |file|
       screenshot = Zucchini::Screenshot.new(file, @device)
-      screenshot.mask
-      screenshot.compare
+      if process
+        screenshot.rotate
+        screenshot.mask
+        screenshot.compare
+      end
       screenshot
     end + unmatched_pending_screenshots
   end
@@ -64,7 +67,7 @@ class Zucchini::Feature
       device_params = (@device[:name] == "iOS Simulator") ? "" : "-w #{@device[:udid]}"
       
       begin
-        out = `instruments #{device_params} -t #{@template} #{Zucchini::Config.app} -e UIASCRIPT #{run_data_path}/feature.js -e UIARESULTSPATH #{run_data_path} 2>&1`
+        out = `instruments #{device_params} -t "#{@template}" "#{Zucchini::Config.app}" -e UIASCRIPT "#{run_data_path}/feature.js" -e UIARESULTSPATH "#{run_data_path}" 2>&1`
         puts out
         # Hack. Instruments don't issue error return codes when JS exceptions occur
         raise "Instruments run error" if (out.match /JavaScript error/) || (out.match /Instruments\ .{0,5}\ Error\ :/ )
@@ -90,6 +93,16 @@ class Zucchini::Feature
       end
     else
       yield
+    end
+  end
+
+  def approve(reference_type)
+    raise "Directory #{path} doesn't contain previous run data" unless File.exists?("#{run_data_path}/Run\ 1")
+
+    screenshots(false).each do |s|
+      reference_file_path = "#{File.dirname(s.file_path)}/../../#{reference_type}/#{device[:screen]}/#{s.file_name}"
+      FileUtils.mkdir_p File.dirname(reference_file_path)
+      @succeeded = FileUtils.copy_file(s.file_path, reference_file_path)
     end
   end
 end

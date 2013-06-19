@@ -1,7 +1,7 @@
 app: MyApp.app
 
 devices:
-  My iDevice: 
+  My iDevice:
     UDID  : lolffb28d74a6fraj2156090784avasc50725dd0
     screen: retina_ios5
 
